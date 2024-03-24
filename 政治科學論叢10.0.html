@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citation Generator</title>
+  <style>
+    em {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Citation Generator</h1>
+  
+  <label for="citationType">Select Citation Type:</label>
+  <select id="citationType">
+    <option value="periodical">Periodical Thesis</option>
+    <option value="book">Book Thesis</option>
+    <option value="news">News Article</option>
+  </select>
+
+  <div id="inputFields">
+    <label for="authorName">Author's Name:</label>
+    <input type="text" id="authorName"><br>
+
+    <label for="year">Year:</label>
+    <input type="text" id="year"><br>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title"><br>
+
+    <span id="additionalFields"></span>
+  </div>
+
+  <button onclick="generateCitation()">Generate Citation</button>
+
+  <p id="citationOutput"></p>
+
+  <script>
+    function generateCitation() {
+      const citationType = document.getElementById("citationType").value;
+      const authorName = document.getElementById("authorName").value;
+      const year = document.getElementById("year").value;
+      const title = document.getElementById("title").value;
+      let citation = "";
+
+      switch (citationType) {
+        case "periodical":
+          const volume = document.getElementById("volume").value;
+          const issue = document.getElementById("issue").value;
+          const pageNumbers = document.getElementById("pageNumbers").value;
+          const periodicalTitle = document.getElementById("periodicalTitle").value;
+          citation = `${authorName}. ${year}. "${title}." <em>${periodicalTitle}</em> ${volume} (${issue}): ${pageNumbers}.`;
+          break;
+        
+        case "book":
+          const editor = document.getElementById("editor").value;
+          const place = document.getElementById("place").value;
+          const publisher = document.getElementById("publisher").value;
+          const bookPageNumbers = document.getElementById("bookPageNumbers").value;
+          const bookTitle = document.getElementById("bookTitle").value;
+          citation = `${authorName}. ${year}. "${title}." <em>${bookTitle}</em>, ed. ${editor}. ${place}: ${publisher}, ${bookPageNumbers}.`;
+          break;
+
+        case "news":
+          const newspaperName = document.getElementById("newspaperName").value;
+          const date = document.getElementById("date").value;
+          const sectionOrPageNumbers = document.getElementById("sectionOrPageNumbers").value;
+          citation = `${authorName}. "${title}." <em>${newspaperName}</em>, ${date}. ${sectionOrPageNumbers}.`;
+          break;
+
+        default:
+          citation = "Invalid citation type.";
+      }
+
+      document.getElementById("citationOutput").innerHTML = citation;
+    }
+
+    document.getElementById("citationType").addEventListener("change", function() {
+      const citationType = this.value;
+      const additionalFields = document.getElementById("additionalFields");
+
+      switch (citationType) {
+        case "periodical":
+          additionalFields.innerHTML = `
+            <label for="periodicalTitle">Title of the Periodical:</label>
+            <input type="text" id="periodicalTitle"><br>
+            <label for="volume">Volume:</label>
+            <input type="text" id="volume"><br>
+            <label for="issue">Issue:</label>
+            <input type="text" id="issue"><br>
+            <label for="pageNumbers">Page Numbers:</label>
+            <input type="text" id="pageNumbers"><br>
+          `;
+          break;
+        
+        case "book":
+          additionalFields.innerHTML = `
+            <label for="bookTitle">Title of the Book:</label>
+            <input type="text" id="bookTitle"><br>
+            <label for="editor">Editor:</label>
+            <input type="text" id="editor"><br>
+            <label for="place">Place of Publication:</label>
+            <input type="text" id="place"><br>
+            <label for="publisher">Publisher:</label>
+            <input type="text" id="publisher"><br>
+            <label for="bookPageNumbers">Page Numbers:</label>
+            <input type="text" id="bookPageNumbers"><br>
+          `;
+          break;
+
+        case "news":
+          additionalFields.innerHTML = `
+            <label for="newspaperName">Newspaper Name:</label>
+            <input type="text" id="newspaperName"><br>
+            <label for="date">Date:</label>
+            <input type="text" id="date"><br>
+            <label for="sectionOrPageNumbers">Section or Page Numbers:</label>
+            <input type="text" id="sectionOrPageNumbers"><br>
+          `;
+          break;
+
+        default:
+          additionalFields.innerHTML = "";
+      }
+    });
+  </script>
+</body>
+</html>
